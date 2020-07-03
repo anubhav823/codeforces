@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Kadane {
@@ -8,21 +9,33 @@ public static void main(String[] args) {
 	int arr[]=new int[n];
 	for(int i=0;i<n;i++)
 		arr[i]=sc.nextInt();
-	int val=maxSubarraySumCircular(arr);
+	int val=KadaneCircular(arr);
 	System.out.println(val);
 }
-	public static int maxSubarraySumCircular(int[] A) 
+public static int kadane(int[] A)
 {
-		int n=A.length;
-		int maxglobal=A[0];
-		int maxsum=A[0];
-		for(int i=1;i<n;i++)
-		{
-			maxsum=Math.max(A[i], maxsum+A[i]);
-			if(maxsum>maxglobal)
-				maxglobal=maxsum;
-			System.out.println(maxglobal);
-		}
-	return maxglobal;
+	int max_so_far = 0;
+
+	int max_ending_here = 0;
+
+	for (int i = 0; i < A.length; i++)
+	{
+		max_ending_here = max_ending_here + A[i];
+		max_ending_here = Integer.max(max_ending_here, 0);
+		max_so_far = Integer.max(max_so_far, max_ending_here);
+	}
+	return max_so_far;
 }
+public static int KadaneCircular(int[] A)
+{
+	for (int i = 0; i < A.length; i++) {
+		A[i] = -A[i];
+	}
+	int negMaxSum = kadane(A);
+	for (int i = 0; i < A.length; i++) {
+		A[i] = -A[i];
+	}
+	return Integer.max(kadane(A), Arrays.stream(A).sum() + negMaxSum);
+}
+
 }
